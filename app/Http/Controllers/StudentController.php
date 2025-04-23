@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class StudentController extends Controller
 {
@@ -17,6 +18,13 @@ class StudentController extends Controller
         ]);
 
         $student = Student::create($validated);
+
+        Http::post('https://hook.us2.make.com/fl36kemegnf5hgf7e2i87fntrszljcud', [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'address' => $validated['address'],
+        ]);
 
         return redirect()->route('dashboard')->with([
             'success' => 'Student added successfully',
@@ -39,7 +47,7 @@ class StudentController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:students,email,'. $student->id, 
+            'email' => 'required|email|unique:students,email,' . $student->id,
             'phone' => 'required',
             'address' => 'required',
         ]);
@@ -47,8 +55,9 @@ class StudentController extends Controller
         $student->update($validated);
 
         return redirect()->route('dashboard')->with(
-            'success', 'Student updated successfully',
-            'newStudent');
+            'success',
+            'Student updated successfully',
+            'newStudent'
+        );
     }
-
 }
