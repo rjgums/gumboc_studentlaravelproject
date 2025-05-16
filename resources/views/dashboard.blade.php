@@ -58,9 +58,18 @@
                             </div>
                         </div>
                         <div class="mt-4">
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                Add Student
+                            <button id="submitButton" type="submit"
+                                class="flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                <span id="buttonText">Add Student</span>
+                                <svg id="spinner" class="hidden animate-spin ml-2 h-5 w-5 text-white"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                                        stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                                </svg>
                             </button>
+
                         </div>
                     </form>
                 </div>
@@ -106,4 +115,20 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.querySelector('form[action="{{ route('student.store') }}"]');
+            const submitButton = document.getElementById('submitButton');
+            const buttonText = document.getElementById('buttonText');
+            const spinner = document.getElementById('spinner');
+
+            form?.addEventListener('submit', function() {
+                submitButton.disabled = true;
+                buttonText.textContent = 'Processing';
+                spinner.classList.remove('hidden');
+            });
+        });
+    </script>
+
 </x-app-layout>
